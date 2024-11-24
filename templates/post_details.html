@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ post.title }}</h2>
+<p>{{ post.content }}</p>
+<small>Posted on {{ post.timestamp }}</small>
+
+<h3>Comments:</h3>
+<ul>
+    {% for comment in post.comments %}
+        <li>
+            {{ comment.content }}
+            <small>Posted on {{ comment.timestamp }}</small>
+        </li>
+    {% endfor %}
+</ul>
+
+
+<!-- Harassment Alert Popup -->
+{% if harassment_alert %}
+<div id="harassmentPopup" class="popup">
+    <div class="popup-content">
+        <h2>Harassment Detected</h2>
+        <p><strong>Type:</strong> {{ harassment_alert.harassment_type }}</p>
+        <p><strong>Class:</strong> {{ harassment_alert.predicted_class }}</p>
+        <p><strong>Severity:</strong> {{ harassment_alert.predicted_severity }}</p>
+        <button onclick="closePopup()">Close</button>
+    </div>
+</div>
+<script>
+    // Show the popup
+    document.getElementById('harassmentPopup').style.display = 'block';
+
+    // Function to close the popup
+    function closePopup() {
+        document.getElementById('harassmentPopup').style.display = 'none';
+    }
+</script>
+<style>
+    .popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        border: 2px solid #333;
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        z-index: 1000;
+    }
+    .popup-content {
+        text-align: center;
+    }
+    .popup-content button {
+        margin-top: 10px;
+        padding: 5px 10px;
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .popup-content button:hover {
+        background-color: #0056b3;
+    }
+</style>
+{% endif %}
+
+
+<h3>Add a Comment:</h3>
+<form method="POST">
+    <label for="content">Comment:</label>
+    <textarea id="content" name="content" required></textarea>
+    <br>
+    <button type="submit">Comment</button>
+</form>
+<a href="{{ url_for('home') }}">Back to Profile</a>
+{% endblock %}

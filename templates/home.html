@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>All Posts</h2>
+<a href="{{ url_for('profile') }}">Go to Your Profile</a>
+<a href="{{ url_for('logout') }}">Logout</a>
+<ul>
+    {% for post in posts %}
+        <li>
+            <h3><a href="{{ url_for('post_details', post_id=post.id) }}">{{ post.title }}</a></h3>
+            <p>{{ post.content }}</p>
+            <small>Posted by {{ post.author.username }} on {{ post.timestamp }}</small>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}
